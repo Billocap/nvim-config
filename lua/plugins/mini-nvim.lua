@@ -14,6 +14,14 @@ return {
       n_lines = 500,
     }
 
+    require('mini.bufremove').setup {
+      silent = true,
+    }
+
+    vim.keymap.set('n', '<leader>x', function()
+      require('mini.bufremove').delete()
+    end)
+
     -- Quality of life improvements for commenting
     require('mini.comment').setup {
       -- Module mappings. Use `''` (empty string) to disable one.

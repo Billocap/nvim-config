@@ -13,5 +13,14 @@ return {
         vim.hl.on_yank()
       end,
     })
+
+    -- Automatically resizes windows when vim is resized
+    vim.api.nvim_create_autocmd('VimResized', {
+      desc = 'Update the size for all open windows',
+      group = vim.api.nvim_create_augroup('resize-windows', { clear = true }),
+      callback = function()
+        vim.cmd 'wincmd ='
+      end,
+    })
   end,
 }

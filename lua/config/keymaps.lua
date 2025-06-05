@@ -35,9 +35,16 @@ return {
 
     vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = 'Saves the changes in the current buffer' })
 
-    vim.keymap.set('n', '<leader>x', ':q<CR>', { silent = true, desc = 'Close current buffer' })
-    vim.keymap.set('n', '<leader>X', ':qa<CR>', { silent = true, desc = 'Close all buffers' })
     vim.keymap.set('n', '<Tab>', ':bnext<CR>')
     vim.keymap.set('n', '<S-Tab>', ':bprev<CR>')
+    vim.keymap.set('n', '<leader>X', ':q<CR>', { silent = true, desc = 'Closes current window' })
+
+    vim.keymap.set('n', '<leader>g', function()
+      print(vim.inspect {
+        vim.api.nvim_list_tabpages(),
+        vim.api.nvim_tabpage_list_wins(0),
+        vim.api.nvim_list_bufs(),
+      })
+    end)
   end,
 }

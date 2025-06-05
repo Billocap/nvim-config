@@ -1,3 +1,18 @@
+local invalid_types = {
+  'help',
+  'NvimTree',
+}
+
+local function is_invalid(type)
+  for _, t in ipairs(invalid_types) do
+    if t == type then
+      return true
+    end
+  end
+
+  return false
+end
+
 return {
   'folke/snacks.nvim',
   priority = 1000,
@@ -8,6 +23,7 @@ return {
     bigfile = {
       notify = true,
     },
+    bufdelete = {},
     dashboard = {},
     indent = {
       -- animate scopes. Enabled by default for Neovim >= 0.10
@@ -24,10 +40,66 @@ return {
       },
       ---@class snacks.indent.Scope.Config: snacks.scope.Config
       scope = {
-        char = '│',
         underline = true, -- underline the start of the scope
+        char = '┃',
+        hl = 'SnacksIndent',
       },
     },
-    terminal = {},
+    terminal = {
+      win = {
+        style = 'minimal',
+        bo = {
+          filetype = 'terminal',
+        },
+      },
+    },
   },
+  keys = {
+    -- {
+    --   '<leader>x',
+    --   function()
+    --     if is_invalid(vim.bo.filetype) then
+    --       vim.cmd 'q'
+    --     else
+    --       require('snacks').bufdelete()
+    --     end
+    --   end,
+    --   desc = 'Closes the current buffer',
+    -- },
+    {
+      '<leader>h',
+      function()
+        require('snacks').terminal.open()
+      end,
+      desc = 'Opens a horizontal terminal window',
+    },
+  },
+  config = function(_, opts)
+    require('snacks').setup(opts)
+
+    local buf_add = false
+
+    vim.api.nvim_create_autocmd('BufAdd', {
+      callback = function(evt)
+        if evt.file == '' then
+          buf_add = true
+        end
+      end,
+    })
+
+    vim.api.nvim_create_autocmd('BufWinEnter', {
+      callback = function(evt)
+        if vim.fn.winheight and evt.file == '' and buf_add then
+          vim.cmd 'only'
+
+          require('snacks').dashboard.open {
+            buf = evt.buf,
+            win = vim.fn.bufwinid(evt.buf),
+          }
+
+          buf_add = false
+        end
+      end,
+    })
+  end,
 }

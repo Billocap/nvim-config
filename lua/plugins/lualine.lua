@@ -5,9 +5,11 @@ return {
   },
   config = function()
     local disabled_types = {
+      '',
       'help',
       'NvimTree',
       'terminal',
+      -- 'snacks_terminal',
     }
 
     require('lualine').setup {
