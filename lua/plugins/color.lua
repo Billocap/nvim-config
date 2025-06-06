@@ -5,6 +5,7 @@ return {
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'folke/tokyonight.nvim',
+    name = 'tokyonight',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     config = function()
       require('tokyonight').setup {
@@ -16,6 +17,7 @@ return {
   },
   {
     'ellisonleao/gruvbox.nvim',
+    name = 'gruvbox',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     config = function()
       require('gruvbox').setup {
@@ -23,8 +25,20 @@ return {
           comments = false,
         },
       }
+    end,
+  },
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    priority = 1000,
+    config = function()
+      require('catppuccin').setup {
+        italic = {
+          comments = false,
+        },
+      }
 
-      vim.cmd.colorscheme 'gruvbox'
+      vim.cmd 'colorscheme catppuccin'
     end,
   },
 }

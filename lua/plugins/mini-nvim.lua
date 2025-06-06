@@ -1,18 +1,3 @@
-local invalid_types = {
-  'help',
-  'NvimTree',
-}
-
-local function is_invalid(type)
-  for _, t in ipairs(invalid_types) do
-    if t == type then
-      return true
-    end
-  end
-
-  return false
-end
-
 return {
   'echasnovski/mini.nvim',
   dependencies = {
@@ -28,18 +13,6 @@ return {
     require('mini.ai').setup {
       n_lines = 500,
     }
-
-    require('mini.bufremove').setup {
-      silent = true,
-    }
-
-    vim.keymap.set('n', '<leader>x', function()
-      if is_invalid(vim.bo.filetype) then
-        vim.cmd 'q'
-      else
-        require('mini.bufremove').delete()
-      end
-    end)
 
     -- Quality of life improvements for commenting
     require('mini.comment').setup {
@@ -71,7 +44,22 @@ return {
     require('mini.operators').setup()
 
     -- Minimal and fast autopairs
-    require('mini.pairs').setup()
+    require('mini.pairs').setup {
+      modes = {
+        insert = true,
+        command = true,
+        terminal = false,
+      },
+      -- skip autopair when next character is one of these
+      skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+      -- skip autopair when the cursor is inside these treesitter nodes
+      skip_ts = { 'string' },
+      -- skip autopair when next character is closing pair
+      -- and there are more closing pairs than opening pairs
+      skip_unbalanced = true,
+      -- better deal with markdown code blocks
+      markdown = true,
+    }
 
     -- Add/delete/replace surroundings (brackets, quotes, etc.)
     --

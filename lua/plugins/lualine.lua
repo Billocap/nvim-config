@@ -11,6 +11,12 @@ return {
       'terminal',
       'snacks_terminal',
       'snacks_dashboard',
+      'dapui_scopes',
+      'dapui_breakpoints',
+      'dapui_stacks',
+      'dapui_watches',
+      'dap-repl',
+      'dapui_console',
     }
 
     require('lualine').setup {

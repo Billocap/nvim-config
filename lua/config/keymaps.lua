@@ -28,23 +28,15 @@ return {
     vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
     -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
-    vim.keymap.set('n', '<C-S-h>', '<C-w>H', { desc = 'Move window to the left' })
-    vim.keymap.set('n', '<C-S-l>', '<C-w>L', { desc = 'Move window to the right' })
-    vim.keymap.set('n', '<C-S-j>', '<C-w>J', { desc = 'Move window to the lower' })
-    vim.keymap.set('n', '<C-S-k>', '<C-w>K', { desc = 'Move window to the upper' })
+    vim.keymap.set('n', 'H', '<C-w>H', { desc = 'Move window to the left' })
+    vim.keymap.set('n', 'L', '<C-w>L', { desc = 'Move window to the right' })
+    vim.keymap.set('n', 'J', '<C-w>J', { desc = 'Move window to the lower' })
+    vim.keymap.set('n', 'K', '<C-w>K', { desc = 'Move window to the upper' })
 
     vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = 'Saves the changes in the current buffer' })
 
     vim.keymap.set('n', '<Tab>', ':bnext<CR>')
     vim.keymap.set('n', '<S-Tab>', ':bprev<CR>')
     vim.keymap.set('n', '<leader>X', ':q<CR>', { silent = true, desc = 'Closes current window' })
-
-    vim.keymap.set('n', '<leader>g', function()
-      print(vim.inspect {
-        vim.api.nvim_list_tabpages(),
-        vim.api.nvim_tabpage_list_wins(0),
-        vim.api.nvim_list_bufs(),
-      })
-    end)
   end,
 }
