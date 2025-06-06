@@ -9,7 +9,8 @@ return {
       'help',
       'NvimTree',
       'terminal',
-      -- 'snacks_terminal',
+      'snacks_terminal',
+      'snacks_dashboard',
     }
 
     require('lualine').setup {
