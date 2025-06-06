@@ -1,3 +1,18 @@
+local invalid_types = {
+  'help',
+  'NvimTree',
+}
+
+local function is_invalid(type)
+  for _, t in ipairs(invalid_types) do
+    if t == type then
+      return true
+    end
+  end
+
+  return false
+end
+
 return {
   'echasnovski/mini.nvim',
   dependencies = {
@@ -19,7 +34,11 @@ return {
     }
 
     vim.keymap.set('n', '<leader>x', function()
-      require('mini.bufremove').delete()
+      if is_invalid(vim.bo.filetype) then
+        vim.cmd 'q'
+      else
+        require('mini.bufremove').delete()
+      end
     end)
 
     -- Quality of life improvements for commenting
