@@ -23,10 +23,7 @@ return {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-      {
-        'mason-org/mason.nvim',
-        opts = {},
-      },
+      'mason-org/mason.nvim',
       'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
@@ -160,6 +157,7 @@ return {
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
             local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
+
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
               group = highlight_augroup,
@@ -308,6 +306,17 @@ return {
       vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, {
         desc = 'Rename all references of a symbol',
       })
+
+      local cmd = vim.lsp.rpc.connect('172.20.144.1', 6005)
+      local godot_root = vim.fs.find({ 'project.godot', '.git' }, { upward = true })
+
+      vim.lsp.start {
+        name = 'Godot',
+        cmd = cmd,
+        root_dir = vim.fs.dirname(godot_root[1]),
+        capabilities = capabilities,
+        settings = {},
+      }
     end,
   },
 }

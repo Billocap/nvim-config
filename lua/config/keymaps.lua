@@ -38,5 +38,11 @@ return {
     vim.keymap.set('n', '<Tab>', ':bnext<CR>')
     vim.keymap.set('n', '<S-Tab>', ':bprev<CR>')
     vim.keymap.set('n', '<leader>X', ':q<CR>', { silent = true, desc = 'Closes current window' })
+
+    vim.keymap.set({ 'n', 'i' }, '<leader>k', vim.lsp.buf.hover, {
+      silent = true,
+      noremap = true,
+      desc = 'Fetches the documentation fo a specific item',
+    })
   end,
 }

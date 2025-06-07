@@ -16,7 +16,7 @@ return {
         'gdlint',
       },
       json = {
-        'prettierd',
+        'jsonlint',
       },
     }
 

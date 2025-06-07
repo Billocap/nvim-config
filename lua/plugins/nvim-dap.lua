@@ -91,19 +91,25 @@ return {
       },
     }
 
+    dap.adapters.godot = {
+      type = 'server',
+      host = '172.20.144.1',
+      port = 6006,
+    }
+
     dap.adapters['local-lua'] = {
       type = 'executable',
       command = 'node',
       args = {
-        -- '--inspect',
-        mason_pack .. '/local-lua-debugger-vscode/extension/extension/debugAdapter.js',
+        '--inspect',
+        mason_path .. '/share/local-lua-debugger-vscode/extension/debugAdapter.js',
       },
       enrich_config = function(config, on_config)
         if not config['extensionPath'] then
           local c = vim.deepcopy(config)
           -- 💀 If this is missing or wrong you'll see
           -- "module 'lldebugger' not found" errors in the dap-repl when trying to launch a debug session
-          c.extensionPath = mason_pack .. '/local-lua-debugger-vscode/'
+          c.extensionPath = mason_path .. '/share/local-lua-debugger-vscode/'
 
           on_config(c)
         else
@@ -119,10 +125,19 @@ return {
         request = 'launch',
         cwd = '${workspaceFolder}',
         program = {
-          lua = 'lua5.1',
+          lua = 'lua',
           file = '${file}',
         },
         args = {},
+      },
+    }
+
+    dap.configurations.gdscript = {
+      {
+        type = 'godot',
+        request = 'launch',
+        name = 'Launch Scene',
+        project = '${workspaceFolder}',
       },
     }
 
@@ -194,7 +209,7 @@ return {
               size = 0.25,
             },
           },
-          position = 'left',
+          position = 'right',
           size = 40,
         },
         {
@@ -236,14 +251,5 @@ return {
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
-
-    -- Install golang specific config
-    require('dap-go').setup {
-      delve = {
-        -- On Windows delve must be run attached or it crashes.
-        -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
-        detached = vim.fn.has 'win32' == 0,
-      },
-    }
   end,
 }

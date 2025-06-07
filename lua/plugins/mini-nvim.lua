@@ -1,7 +1,11 @@
 return {
   'echasnovski/mini.nvim',
   dependencies = {
-    'folke/ts-comments.nvim',
+    {
+      'folke/ts-comments.nvim',
+      opts = {},
+      event = 'VeryLazy',
+    },
   },
   config = function()
     -- Better Around/Inside textobjects
