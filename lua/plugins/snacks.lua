@@ -2,6 +2,7 @@ local invalid_types = {
   'help',
   'lazy',
   'NvimTree',
+  'terminal',
 }
 
 local function is_invalid(type)
@@ -169,7 +170,7 @@ return {
 
     vim.api.nvim_create_autocmd('BufWinEnter', {
       callback = function(evt)
-        if evt.file == '' and vim.bo.bt == '' then
+        if evt.file == '' and vim.bo.bt == '' and vim.bo.filetype == '' then
           vim.cmd 'only'
 
           require('snacks').dashboard.open {

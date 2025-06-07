@@ -2,6 +2,7 @@ return {
   'nvim-lualine/lualine.nvim',
   dependencies = {
     'nvim-tree/nvim-web-devicons',
+    'stevearc/overseer.nvim',
   },
   config = function()
     local disabled_types = {
@@ -17,14 +18,30 @@ return {
       'dapui_watches',
       'dap-repl',
       'dapui_console',
+      'OverseerList',
     }
+
+    local overseer = require 'overseer'
 
     require('lualine').setup {
       sections = {
         lualine_a = { 'mode' },
         lualine_b = { 'branch', 'diff', 'diagnostics' },
         lualine_c = { 'filetype' },
-        lualine_x = { 'encoding', 'fileformat' },
+        lualine_x = {
+          {
+            'overseer',
+            colored = true, -- Color the task icons and counts
+            symbols = {
+              [overseer.STATUS.FAILURE] = ':',
+              [overseer.STATUS.CANCELED] = ':',
+              [overseer.STATUS.SUCCESS] = ':',
+              [overseer.STATUS.RUNNING] = ':',
+            },
+          },
+          'encoding',
+          'fileformat',
+        },
         lualine_y = { 'progress' },
         lualine_z = { 'location' },
       },
