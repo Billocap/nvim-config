@@ -45,8 +45,21 @@ return {
       typescriptreact = {
         'prettier',
       },
+      css = {
+        'prettier',
+      },
       gdscript = {
         'gdformat',
+      },
+      clang = {
+        'clang-format',
+        'ast-grep',
+        stop_after_first = true,
+      },
+      cpp = {
+        'clang-format',
+        'ast-grep',
+        stop_after_first = true,
       },
     },
   },

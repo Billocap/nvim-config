@@ -263,6 +263,30 @@ return {
             },
           },
         },
+
+        ts_ls = {
+          on_attach = function(client, bufnr)
+            client.server_capabilities.documentFormattingProvider = false
+
+            vim.api.nvim_create_autocmd('BufWritePre', {
+              group = vim.api.nvim_create_augroup('ts-ls-augroup', { clear = true }),
+              callback = function()
+                vim.defer_fn(function()
+                  vim.print(vim.inspect { client, bufnr })
+                end, 500)
+
+                client.exec_cmd({
+                  command = '_typescript.organizeImports',
+                  arguments = {
+                    vim.api.nvim_buf_get_name(0),
+                  },
+                }, {
+                  bufnr = bufnr,
+                })
+              end,
+            })
+          end,
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -297,6 +321,7 @@ return {
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+
             require('lspconfig')[server_name].setup(server)
           end,
         },
@@ -307,7 +332,7 @@ return {
         desc = 'Rename all references of a symbol',
       })
 
-      local cmd = vim.lsp.rpc.connect('172.20.144.1', 6005)
+      local cmd = vim.lsp.rpc.connect('localhost', 6005)
       local godot_root = vim.fs.find({ 'project.godot', '.git' }, { upward = true })
 
       vim.lsp.start {
